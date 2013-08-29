@@ -6,6 +6,7 @@ import 'dart:typed_data';
 
 part 'src/hash.dart';
 part 'src/texturegen.dart';
+part 'src/grid.dart';
 
 class Maper{
   CanvasElement c;
@@ -28,27 +29,29 @@ class Maper{
   start([_]) {
     Stopwatch total = new Stopwatch()..start();
     
-    picToImage(gen.getTile(0, 0, 32), img);
+    gridToImage(gen.getTile(0, 0, 32), img);
     p.putImageData(img, 0, 0);
-    picToImage(gen.getTile(512, 0, 32), img1);
+    gridToImage(gen.getTile(512, 0, 32), img1);
     p.putImageData(img1, 512, 0);
-    picToImage(gen.getTile(0, 16,32), img2);
+    gridToImage(gen.getTile(0, 16,32), img2);
     p.putImageData(img2, 0, 512);
-    picToImage(gen.getTile(16, 16, 32), img3);
+    gridToImage(gen.getTile(16, 16, 32), img3);
     p.putImageData(img3, 512, 512);
     
     print(gen);
     print("Total(${total.elapsedMilliseconds})");
   }
   
-  picToImage(pic,img){
-    for(var i = 0; i < pic.length; i += 1){
+  gridToImage(Grid pic,img){
+    var picd = pic.data;
+    var imgd = img.data;
+    for(var i = 0; i < picd.length; i += 1){
       int imgi = i * 4;
-      int h = (pic[i] * 255).round();
-      img.data[imgi] = h;
-      img.data[imgi + 1] = h;
-      img.data[imgi + 2] = h;
-      img.data[imgi + 3] = 255;
+      int h = (picd[i] * 255).round();
+      imgd[imgi] = h;
+      imgd[imgi + 1] = h;
+      imgd[imgi + 2] = h;
+      imgd[imgi + 3] = 255;
     }
   }
 }

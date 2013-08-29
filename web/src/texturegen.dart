@@ -14,13 +14,14 @@ class TextureGen{
     total = new Stopwatch();
   }
   
-  Float64List getTile(int x,int y,int zoom){
+  Grid getTile(int x,int y,int zoom){
     print('$x $y');
     total.start();
-    
-    var list = turbulence(x, y, zoom);
+   
+    var grid = new Grid(512,512);
+    hash(grid, x, y);
     total.stop();
-    return list;
+    return grid;
   }
   
   toString(){
@@ -33,32 +34,15 @@ class TextureGen{
     return sb.toString();
   }
   
-  Float64List hash(int x,int y,[int zoom = 1, var size = 513]){
-    print('Hash first: $x $y');
+  Grid hash(Grid fill, int xfrom,int yfrom, [int level = 1]){
+    print('Hash x: $xfrom ${xfrom + fill.width}');
+    print('Hash y: $yfrom ${yfrom + fill.height}');
     hashtime.start();
-    var list = new Float64List(size*size);
-    zoom = 512 ~/ zoom;
-    var xfrom = x;
-    var yfrom = y;
-    var truex = 0;
-    var truey = 0;
     
-    for(var x = 0; x < size; x += 1){
-      truex = x + xfrom;
-      for(var y = 0; y < size; y += 1){
-        truey = y + yfrom;
-        list[((y * size) + x)] = _hash.hash('${truex}x{$truey}x$zoom') / 0xFFFFFFFF;
-      }
-    }
-    print('Hash last:$truex $truey');
+    fill.fill((x,y) => _hash.hash('${x}x{$y}l$level') / 0xFFFFFFFF, xfrom, yfrom);
     
     hashtime.stop();
-    return list;
-  }
-  
-  List<double> hashline(String data){
-    var rand = new Random(_hash.hash(data));
-    return new List.generate(512, (_)=>rand.nextDouble(), growable: true);
+    return fill;
   }
   
   Float64List inter(Float64List data, int zoom){
