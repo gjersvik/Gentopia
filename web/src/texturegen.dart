@@ -14,12 +14,13 @@ class TextureGen{
     total = new Stopwatch();
   }
   
-  Grid getTile(int x,int y,int zoom){
+  Grid getTile(int x,int y, height, width,[int outHeight = 512, int outWidth = 512]){
     print('$x $y');
     total.start();
    
-    var grid = new Grid(512,512);
+    var grid = new Grid(height + 1,width + 1);
     hash(grid, x, y);
+    grid = inter(grid, outHeight, outWidth);
     total.stop();
     return grid;
   }
@@ -45,35 +46,38 @@ class TextureGen{
     return fill;
   }
   
-  Float64List inter(Float64List data, int zoom){
+  Grid inter(Grid data, int outHeight, int outWidth){
     intertime.start();
-    var list = new Float64List(512*512);
-    var size = 512 ~/ zoom;
-    print('inter $zoom $size');
-    for(int x = 0; x < size; x += 1 ){
+    var grid = new Grid(outHeight, outWidth);
+    int height = data.height - 1;
+    int width = data.width - 1;
+    int hcell = outHeight ~/ height;
+    int wcell = outWidth ~/ width;
+    
+    for(int x = 0; x < width; x += 1 ){
       int x2 = x + 1;
-      int ix = x * zoom;
-      for(int y = 0; y < size; y += 1 ){
+      int ix = x * wcell;
+      for(int y = 0; y < height; y += 1 ){
         int y2 = y + 1;
-        int iy = y * zoom;
-        for(int fy = 0; fy < zoom; fy += 1 ){
-          var xt = mix(data[(y * (size +1)) + x],data[(y2 * (size +1)) + x],1-(fy / zoom));
-          var xb = mix(data[(y * (size +1)) + x2],data[(y2 * (size +1)) + x2],1-(fy / zoom));
-          for(int fx = 0; fx < zoom; fx += 1 ){
-            list[((iy + fy) * 512) + ix + fx] = mix(xt, xb, 1-(fx / zoom));
+        int iy = y * hcell;
+        for(int fy = 0; fy < hcell; fy += 1 ){
+          var xt = mix(data.get(x, y), data.get(x, y2), fy / hcell);
+          var xb = mix(data.get(x2, y), data.get(x2, y2), fy / hcell);
+          for(int fx = 0; fx < wcell; fx += 1 ){
+            grid.set(ix + fx, iy + fy, mix(xt, xb, fx / wcell));
           }
         }
       }
     }
     intertime.stop();
-    return list;
+    return grid;
   }
 
   var mixcount = 0;
   mix(a, b, t){
     mixcount += 1;
     t = t*t*(3 - 2*t);
-    return a*t + b*(1-t);
+    return a*(1-t) + b*t;
   }
 
   Float64List turbulence(int x, int y, int zoom){

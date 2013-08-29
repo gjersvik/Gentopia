@@ -1,7 +1,6 @@
 library gentopia;
 
 import 'dart:html';
-import 'dart:math';
 import 'dart:typed_data';
 
 part 'src/hash.dart';
@@ -29,13 +28,13 @@ class Maper{
   start([_]) {
     Stopwatch total = new Stopwatch()..start();
     
-    gridToImage(gen.getTile(0, 0, 32), img);
+    gridToImage(gen.getTile(0, 0, 16, 16), img);
     p.putImageData(img, 0, 0);
-    gridToImage(gen.getTile(512, 0, 32), img1);
+    gridToImage(gen.getTile(16, 0, 16, 16), img1);
     p.putImageData(img1, 512, 0);
-    gridToImage(gen.getTile(0, 16,32), img2);
+    gridToImage(gen.getTile(0, 16,16,16), img2);
     p.putImageData(img2, 0, 512);
-    gridToImage(gen.getTile(16, 16, 32), img3);
+    gridToImage(gen.getTile(16, 16, 16,16), img3);
     p.putImageData(img3, 512, 512);
     
     print(gen);

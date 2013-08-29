@@ -9,7 +9,8 @@ class Grid{
     data = new Float64List(this.height*width);
   }
   
-  get(x,y) => data[(y*width) + x];
+  get(int x,int y) => data[(y*width) + x];
+  set(int x,int y, double value) =>  data[(y*width) + x] = value;
   
   fill(double generate(int x, int y), [int fromx = 0, int fromy = 0]){
     for(var y = 0; y < height; y += 1){
