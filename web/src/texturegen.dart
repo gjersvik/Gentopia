@@ -17,10 +17,32 @@ class TextureGen{
   Grid getTile(int x,int y, height, width,[int outHeight = 512, int outWidth = 512]){
     print('$x $y');
     total.start();
-   
-    var grid = new Grid(height + 1,width + 1);
-    hash(grid, x, y);
-    grid = inter(grid, outHeight, outWidth);
+    
+    var grid = new Grid(outHeight,outWidth);
+    var factor = 2;
+    var divide = 1;
+    var level = 2;
+    var temp;
+      
+    grid.addGrid(inter(hash(new Grid(height + 1,width +1), x,y), outHeight, outWidth));
+    while(height * factor < outHeight && width * factor < outWidth){
+      temp = new Grid((height * factor) + 1,(width * factor) +1);
+      temp = hash(temp, x * factor,y * factor, level);
+      temp.divide(factor);
+      grid.addGrid(inter(temp, outHeight, outWidth));
+      divide += (1 / factor);
+      factor *= 2;
+      level += 1;
+    }
+    
+    temp = new Grid(outHeight, outWidth);
+    temp = hash(temp, x * factor,y * factor, level);
+    temp.divide(factor);
+    grid.addGrid(temp);
+    divide += (1 / factor);
+    
+    grid.divide(divide);
+    
     total.stop();
     return grid;
   }
@@ -78,39 +100,5 @@ class TextureGen{
     mixcount += 1;
     t = t*t*(3 - 2*t);
     return a*(1-t) + b*t;
-  }
-
-  Float64List turbulence(int x, int y, int zoom){
-    print('$x $y $zoom');
-    turbu.start();
-    var value = [];
-    var izoom = zoom;
-    
-    double truex = 0.0;
-    double truey = 0.0;
-    
-    
-    while(izoom >= 2){
-      var list = hash(x * izoom ,y * izoom,izoom,(512 ~/ izoom) +1);
-      value.add(inter(list,izoom));
-      izoom = izoom ~/ 2;
-    }
-    value.add(hash(x,y,1,512));
-    
-    var div = 0;
-    for(var j = 0; j < value.length; j += 1){
-      div += 1 / (j + 1);
-    }
-    
-    for(var i = 0; i < 512*512; i+=1){
-      var sum = 0;
-      for(var j = 0; j < value.length; j += 1){
-        sum += value[j][i] / (j + 1);
-      }
-      sum /= div;
-      value[0][i] = sum;
-    }
-    turbu.stop();
-    return value.first;
   }
 }

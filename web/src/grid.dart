@@ -9,6 +9,19 @@ class Grid{
     data = new Float64List(this.height*width);
   }
   
+  addGrid(Grid v){
+    var vdata = v.data;
+    for(var i = 0; i < data.length; i += 1){
+      data[i] += vdata[i];
+    }
+  }
+  
+  divide(num v){
+    for(var i = 0; i < data.length; i += 1){
+      data[i] /= v;
+    }
+  }
+  
   get(int x,int y) => data[(y*width) + x];
   set(int x,int y, double value) =>  data[(y*width) + x] = value;
   
