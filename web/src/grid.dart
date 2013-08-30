@@ -18,63 +18,59 @@ class Grid{
   }
   
   Grid operator +(v){
-    var data = new Float64List(height*width);
     if(v is Grid){
       var vdata = v._data;
       for(var i = 0; i < _data.length; i += 1){
-        data[i] = _data[i] + vdata[i];
+        _data[i] += vdata[i];
       }
     }else{
       for(var i = 0; i < _data.length; i += 1){
-        data[i] = _data[i] + v;
+        _data[i] += v;
       }
     }
-    return new Grid._internal(height,width,data);
+    return this;
   }
   
   Grid operator -(v){
-    var data = new Float64List(height*width);
     if(v is Grid){
       var vdata = v._data;
       for(var i = 0; i < _data.length; i += 1){
-        data[i] = _data[i] - vdata[i];
+        _data[i] -= vdata[i];
       }
     }else{
       for(var i = 0; i < _data.length; i += 1){
-        data[i] = _data[i] - v;
+        _data[i] -= v;
       }
     }
-    return new Grid._internal(height,width,data);
+    return this;
   }
   
   Grid operator *(v){
-    var data = new Float64List(height*width);
     if(v is Grid){
       var vdata = v._data;
       for(var i = 0; i < _data.length; i += 1){
-        data[i] = _data[i] * vdata[i];
+        _data[i] *= vdata[i];
       }
     }else{
       for(var i = 0; i < _data.length; i += 1){
-        data[i] = _data[i] * v;
+        _data[i] *= v;
       }
     }
-    return new Grid._internal(height,width,data);
+    return this;
   }
   
   Grid operator /(v){
-    var data = new Float64List(height*width);
     if(v is Grid){
       var vdata = v._data;
       for(var i = 0; i < _data.length; i += 1){
-        data[i] = _data[i] / vdata[i];
+        _data[i] /= vdata[i];
       }
     }else{
       for(var i = 0; i < _data.length; i += 1){
-        data[i] = _data[i] / v;
+        _data[i] /= v;
       }
     }
-    return new Grid._internal(height,width,data);
+    return this;
   }
   
   Grid scaleUp(int newHeight,int newWidth,double mix(double a, double b, double t)){
