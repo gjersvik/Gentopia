@@ -4,6 +4,7 @@ import 'dart:html';
 import 'dart:math';
 import 'dart:typed_data';
 
+part 'src/color.dart';
 part 'src/hash.dart';
 part 'src/texturegen.dart';
 part 'src/grid.dart';
@@ -11,6 +12,7 @@ part 'src/grid.dart';
 class Maper{
   Element elem;
   
+  ColorGen cgen = new ColorGen();
   CanvasElement c = new CanvasElement(height:512,width:512);
   TextureGen gen = new TextureGen('Ole Martin');
   
@@ -37,11 +39,11 @@ class Maper{
     
     for(var i = 0; i < picd.length; i += 1){
       int imgi = i * 4;
-      int h = (picd[i] * 255).round();
-      imgd[imgi] = h;
-      imgd[imgi + 1] = h;
-      imgd[imgi + 2] = h;
-      imgd[imgi + 3] = 255;
+      Color c = cgen.getColor(picd[i]);
+      imgd[imgi] = c.red;
+      imgd[imgi + 1] = c.green;
+      imgd[imgi + 2] = c.blue;
+      imgd[imgi + 3] = c.alfa;
     }
     
     paint.putImageData(img, 0, 0);
