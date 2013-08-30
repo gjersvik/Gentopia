@@ -1,27 +1,22 @@
+html {
+  height: 100%;
+}
 
 body {
-  background-color: #F8F8F8;
-  font-family: 'Open Sans', sans-serif;
-  font-size: 14px;
-  font-weight: normal;
-  line-height: 1.2em;
-  margin: 15px;
+  margin: 0px;
+  height: 100%;
 }
 
-h1, p {
-  color: #333;
+#controll{
+  position: absolute;
 }
 
-#sample_container_id {
+#map{
+  height: 100%;
   width: 100%;
-  height: 400px;
-  position: relative;
-  border: 1px solid #ccc;
-  background-color: #fff;
+  background-color: green;
+  overflow: hidden;
 }
 
-#sample_text_id {
-  font-size: 24pt;
-  text-align: center;
-  margin-top: 140px;
+#map img{
 }

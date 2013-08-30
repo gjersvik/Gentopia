@@ -61,8 +61,8 @@ class TextureGen{
     var xdiff = hx % 32;
     var fill = new Grid(height, width);
     
-    for(var y = 0; y < height + 32; y += 32){
-      for(var x = 0; x < width + 32; x += 32){
+    for(var y = 0; y - ydiff < height; y += 32){
+      for(var x = 0; x - xdiff < width; x += 32){
         fill.put(x - xdiff , y - ydiff, hashCell(hx + x - xdiff,hy + y - ydiff, level));
       }
     }
