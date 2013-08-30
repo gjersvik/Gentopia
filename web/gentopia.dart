@@ -42,7 +42,7 @@ class Maper{
   }
   
   gridToImage(Grid pic,img){
-    var picd = pic.data;
+    var picd = pic.getData();
     var imgd = img.data;
     for(var i = 0; i < picd.length; i += 1){
       int imgi = i * 4;

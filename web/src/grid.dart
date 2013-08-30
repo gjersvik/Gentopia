@@ -3,27 +3,29 @@ part of gentopia;
 class Grid{
   final int height;
   final int width;
-  Float64List data;
+  Float64List _data;
   
   Grid(this.height,this.width){
-    data = new Float64List(this.height*width);
+    _data = new Float64List(this.height*width);
   }
   
   addGrid(Grid v){
-    var vdata = v.data;
-    for(var i = 0; i < data.length; i += 1){
-      data[i] += vdata[i];
+    var vdata = v._data;
+    for(var i = 0; i < _data.length; i += 1){
+      _data[i] += vdata[i];
     }
   }
   
   divide(num v){
-    for(var i = 0; i < data.length; i += 1){
-      data[i] /= v;
+    for(var i = 0; i < _data.length; i += 1){
+      _data[i] /= v;
     }
   }
   
-  get(int x,int y) => data[(y*width) + x];
-  set(int x,int y, double value) =>  data[(y*width) + x] = value;
+  get(int x,int y) => _data[(y*width) + x];
+  set(int x,int y, double value) =>  _data[(y*width) + x] = value;
+  
+  Float64List getData() => _data;
   
   fill(double generate(int x, int y), [int fromx = 0, int fromy = 0]){
     for(var y = 0; y < height; y += 1){
@@ -31,7 +33,7 @@ class Grid{
       var ywidth = y * width;
       for(var x = 0; x < width; x += 1){
         truey = y + fromy;
-        data[ywidth + x] = generate(truey,x + fromx);
+        _data[ywidth + x] = generate(truey,x + fromx);
       }
     }
   }
