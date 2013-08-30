@@ -8,7 +8,6 @@ class TextureGen{
   Stopwatch total = new Stopwatch();
   Stopwatch hashtime = new Stopwatch();
   Stopwatch intertime = new Stopwatch();
-  Stopwatch turbu = new Stopwatch();
   TextureGen(String seed){
     _hash = new Hash(seed);
     total = new Stopwatch();
@@ -24,24 +23,22 @@ class TextureGen{
     var level = 2;
     var temp;
       
-    grid.addGrid(inter(hash(new Grid(height + 1,width +1), x,y), outHeight, outWidth));
+    grid += inter(hash(x, y, height + 1, width +1), outHeight, outWidth);
     while(height * factor < outHeight && width * factor < outWidth){
-      temp = new Grid((height * factor) + 1,(width * factor) +1);
-      temp = hash(temp, x * factor,y * factor, level);
-      temp.divide(factor);
-      grid.addGrid(inter(temp, outHeight, outWidth));
+      temp = hash( x * factor, y * factor, (height * factor) + 1, (width * factor) +1, level);
+      temp /= factor;
+      grid += inter(temp, outHeight, outWidth);
       divide += (1 / factor);
       factor *= 2;
       level += 1;
     }
     
-    temp = new Grid(outHeight, outWidth);
-    temp = hash(temp, x * factor,y * factor, level);
-    temp.divide(factor);
-    grid.addGrid(temp);
+    temp = hash(x * factor,y * factor, outHeight, outWidth, level);
+    temp /= factor;
+    grid += temp;
     divide += (1 / factor);
     
-    grid.divide(divide);
+    grid /= divide;
     
     total.stop();
     return grid;
@@ -52,45 +49,24 @@ class TextureGen{
     sb.writeln("Hash(${hashtime.elapsedMilliseconds})");
     sb.writeln("Inter(${intertime.elapsedMilliseconds})");
     sb.writeln('$mixcount mixcount');
-    sb.writeln("Turbulence(${turbu.elapsedMilliseconds})");
     sb.write("TextureGen(${total.elapsedMilliseconds})");
     return sb.toString();
   }
   
-  Grid hash(Grid fill, int xfrom,int yfrom, [int level = 1]){
-    print('Hash x: $xfrom ${xfrom + fill.width}');
-    print('Hash y: $yfrom ${yfrom + fill.height}');
+  Grid hash(int hx,int hy, int height, int width, [int level = 1]){
+    print('Hash x: $hx ${hx + width - 1}');
+    print('Hash y: $hy ${hy + height - 1}');
     hashtime.start();
     
-    fill.fill((x,y) => _hash.hash('${x}x{$y}l$level') / 0xFFFFFFFF, xfrom, yfrom);
+    var fill = new Grid.fill(height, width, (x,y) => _hash.hash('${x+hx}x${y+hy}l$level') / 0xFFFFFFFF);
     
     hashtime.stop();
     return fill;
   }
   
-  Grid inter(Grid data, int outHeight, int outWidth){
+  Grid inter(Grid data, int newHeight, int newWidth){
     intertime.start();
-    var grid = new Grid(outHeight, outWidth);
-    int height = data.height - 1;
-    int width = data.width - 1;
-    int hcell = outHeight ~/ height;
-    int wcell = outWidth ~/ width;
-    
-    for(int x = 0; x < width; x += 1 ){
-      int x2 = x + 1;
-      int ix = x * wcell;
-      for(int y = 0; y < height; y += 1 ){
-        int y2 = y + 1;
-        int iy = y * hcell;
-        for(int fy = 0; fy < hcell; fy += 1 ){
-          var xt = mix(data.get(x, y), data.get(x, y2), fy / hcell);
-          var xb = mix(data.get(x2, y), data.get(x2, y2), fy / hcell);
-          for(int fx = 0; fx < wcell; fx += 1 ){
-            grid.set(ix + fx, iy + fy, mix(xt, xb, fx / wcell));
-          }
-        }
-      }
-    }
+    var grid = data.scaleUp(newHeight, newWidth, mix);
     intertime.stop();
     return grid;
   }
