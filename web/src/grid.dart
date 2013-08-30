@@ -106,6 +106,20 @@ class Grid{
   get(int x,int y) => _data[(y*width) + x];
   set(int x,int y, double value) =>  _data[(y*width) + x] = value;
   
+  put(int x,int y, Grid v){
+    var ystart = (y < 0) ? -y : 0;
+    var yend = (y + v.height <= height)? v.height: height - y;
+    var xstart = (x < 0) ? -x : 0;
+    var xend = (x + v.width <= width)? v.width: width - x;
+    
+    for(int iy = ystart; iy < yend; iy += 1){
+      var ywitdh = (y + iy) * width;
+      for(int ix = xstart; ix < xend; ix += 1){
+        _data[ywitdh + ix + x] = v.get(ix, iy);
+      }
+    }
+  }
+  
   Float64List getData() => _data;
   
   Grid._internal(this.height,this.width,this._data);

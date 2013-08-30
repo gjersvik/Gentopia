@@ -57,11 +57,23 @@ class TextureGen{
     print('Hash x: $hx ${hx + width - 1}');
     print('Hash y: $hy ${hy + height - 1}');
     hashtime.start();
+    var ydiff = hy % 32;
+    var xdiff = hx % 32;
+    var fill = new Grid(height, width);
     
-    var fill = new Grid.fill(height, width, (x,y) => _hash.hash('${x+hx}x${y+hy}l$level') / 0xFFFFFFFF);
+    for(var y = 0; y <= height; y += 32){
+      for(var x = 0; x <= width; x += 32){
+        fill.put(x - xdiff , y - ydiff, hashCell(hx + x - xdiff,hy + y - ydiff, level));
+      }
+    }
     
     hashtime.stop();
     return fill;
+  }
+  
+  Grid hashCell(int x,int y,int level){
+    var rand = new Random(_hash.hash('${x}x${y}l$level'));
+    return new Grid.fill(32, 32, (x, y) => rand.nextDouble());
   }
   
   Grid inter(Grid data, int newHeight, int newWidth){
