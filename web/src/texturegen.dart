@@ -1,4 +1,4 @@
-part of gentopia;
+part of gentopiamap;
 
 class TextureGen{
   int _seed = 0;

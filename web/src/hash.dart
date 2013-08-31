@@ -1,4 +1,4 @@
-part of gentopia;
+part of gentopiamap;
 
 class Hash{
   static const C1 = 0xcc9e2d51;
