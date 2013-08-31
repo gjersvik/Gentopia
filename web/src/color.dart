@@ -4,14 +4,13 @@ class ColorGen {
   
   Map _points = new Map();
   ColorGen(){
-    addPoint(0.0, new Color(3, 24, 84));
-    addPoint(0.2, new Color(3, 24, 84));
-    addPoint(0.35, new Color(192, 218, 255));
-    addPoint(0.375, new Color(173, 242, 138));
-    addPoint(0.4, new Color(0, 242, 22));
-    addPoint(0.58, new Color(0, 242, 22));
-    addPoint(0.6, new Color(0, 199, 18));
-    addPoint(0.89, new Color(152, 153, 151));
+    addPoint(0.0, new Color(6, 48, 168));
+    addPoint(0.25, new Color(6, 48, 168));
+    addPoint(0.45, new Color(192, 218, 255));
+    addPoint(0.475, new Color(173, 242, 138));
+    addPoint(0.5, new Color(0, 200, 22));
+    addPoint(0.7, new Color(0, 150, 18));
+    addPoint(0.89, new Color(202, 203, 201));
     addPoint(0.9, new Color(236, 234, 255));
     addPoint(1.0, new Color(255,255,255));
   }
