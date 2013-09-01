@@ -14,7 +14,6 @@ class TextureGen{
   }
   
   Grid getTile(int x,int y, height, width,[int outHeight = 512, int outWidth = 512]){
-    print('$x $y');
     total.start();
     
     var grid = new Grid(outHeight,outWidth);
@@ -54,8 +53,6 @@ class TextureGen{
   }
   
   Grid hash(int hx,int hy, int height, int width, [int level = 1]){
-    print('Hash x: $hx ${hx + width - 1}');
-    print('Hash y: $hy ${hy + height - 1}');
     hashtime.start();
     var ydiff = hy % 32;
     var xdiff = hx % 32;

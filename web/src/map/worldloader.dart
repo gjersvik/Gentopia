@@ -8,7 +8,7 @@ class WorldLoader{
   ReceivePort debug = new ReceivePort();
   
   WorldLoader([this.uri = 'world.dart']){
-    debug.receive((message, SendPort replyTo)=> print("Worker:$message"));
+    debug.receive((message, SendPort replyTo)=> print("Worker: $message"));
     
     worker = spawnUri(uri);
     worker.send('errorPort', debug.toSendPort());

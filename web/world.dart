@@ -21,7 +21,7 @@ dynamic gard(dynamic call()){
   }catch(e){
     print(e);
     if(e is Error){
-      print(e.stackTrace);
+      print((e as Error).stackTrace);
     }
     port.close();
   }
@@ -40,6 +40,7 @@ class World{
   }
   
   String makeTexture(String order){
+    print("Start:$order");
     var args = order.split(':');
     int x = int.parse(args[0]);
     int y = int.parse(args[1]);
@@ -58,7 +59,7 @@ class World{
       data.add(c.blue);
       data.add(c.alfa);
     }
-    print(data.length);
+    print("Done:$order");
     return new String.fromCharCodes(data);
   }
 }
