@@ -1,4 +1,4 @@
-part of gentopiamap;
+part of gentopiaworld;
 
 class Grid{
   final int height;
