@@ -21,11 +21,16 @@ class Tile{
 class Maper{
   Element elem;
   
+  num height;
+  num width;
+  bool resized = true;
+  bool moved = true;
+  
   WorldLoader load = new WorldLoader();
   List<Tile> list = [];
   
   Maper(this.elem){
-    
+    window.onResize.listen((_) => resized = true);
   }
   
   start() {
@@ -46,15 +51,26 @@ class Maper{
     return tile;
   }
   
-  updatePos(){
-    num x = 0 + elem.borderEdge.width / 2;
-    num y = 0 + elem.borderEdge.height / 2;
+  updatePos( [_] ){
+    if(resized){
+      height = elem.borderEdge.height;
+      width = elem.borderEdge.width;
+      resized = false;
+      moved = true;
+    }
     
-    list.forEach((t){
-      int lx = (x + t.x * 512).toInt();
-      int ly = (y + t.y * 512).toInt();
-      t.put(lx, ly);
-    });
+    if(moved){
+      num x = 0 + elem.borderEdge.width / 2;
+      num y = 0 + elem.borderEdge.height / 2;
+      
+      list.forEach((t){
+        int lx = (x + t.x * 512).toInt();
+        int ly = (y + t.y * 512).toInt();
+        t.put(lx, ly);
+      });
+      moved = false;
+    }
+    window.animationFrame.then(updatePos);
   }
   
 }
