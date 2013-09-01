@@ -12,6 +12,7 @@ body {
 }
 
 #map{
+  position: relative;
   height: 100%;
   width: 100%;
   background-color: green;
@@ -19,4 +20,7 @@ body {
 }
 
 #map img{
+  position: absolute;
+  top: 0;
+  left: 0;
 }
