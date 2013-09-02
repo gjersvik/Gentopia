@@ -21,6 +21,8 @@ class Tile{
 class Maper{
   Element elem;
   
+  double x = 0.0;
+  double y = 0.0;
   num height;
   num width;
   bool resized = true;
@@ -31,6 +33,11 @@ class Maper{
   
   Maper(this.elem){
     window.onResize.listen((_) => resized = true);
+    window.onClick.listen(( e ){
+      x -= (e.page.x - width / 2) / 512;
+      y -= (e.page.y - height / 2) / 512;
+      moved = true;
+    });
   }
   
   start() {
@@ -60,12 +67,12 @@ class Maper{
     }
     
     if(moved){
-      num x = 0 + elem.borderEdge.width / 2;
-      num y = 0 + elem.borderEdge.height / 2;
+      num x = this.x + width / 2 / 512;
+      num y = this.y + height / 2 / 512;
       
       list.forEach((t){
-        int lx = (x + t.x * 512).toInt();
-        int ly = (y + t.y * 512).toInt();
+        int lx = ((x + t.x) * 512).toInt();
+        int ly = ((y + t.y) * 512).toInt();
         t.put(lx, ly);
       });
       moved = false;
