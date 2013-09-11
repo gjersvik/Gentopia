@@ -1,4 +1,4 @@
-name: TextureGen
+name: gentopia
 description: A sample web application
 dependencies:
   browser: any
