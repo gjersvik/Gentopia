@@ -1,4 +1,4 @@
-part of gentopiaworld;
+part of gentopia;
 
 class ColorGen {
   

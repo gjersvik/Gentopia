@@ -2,7 +2,8 @@ library gentopiamap;
 
 import 'dart:async';
 import 'dart:html';
-import 'dart:isolate';
+
+import 'package:gentopia/gentopia.dart';
 
 part 'src/map/tile.dart';
 part 'src/map/tilemaneger.dart';

@@ -1,4 +1,4 @@
-part of gentopiaworld;
+part of gentopia;
 
 class Hash{
   static const C1 = 0xcc9e2d51;
