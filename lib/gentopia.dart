@@ -8,4 +8,5 @@ part 'src/grid.dart';
 part 'src/hash.dart';
 part 'src/texturegen.dart';
 part 'src/world.dart';
+part 'src/world_length.dart';
 

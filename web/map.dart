@@ -63,6 +63,14 @@ class Maper{
 }
 
 void main() {
+  var len = new WorldLength();
+  len.mm = 1234;
+  print(len);
+  len.mm = 1234567;
+  print(len);
+  len.mm = 123456780123;
+  print(len);
+  
   var map = new Maper(query("#map"));
   map.start();
 }
