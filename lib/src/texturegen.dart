@@ -5,16 +5,11 @@ class TextureGen{
   
   Hash _hash;
   
-  Stopwatch total = new Stopwatch();
-  Stopwatch hashtime = new Stopwatch();
-  Stopwatch intertime = new Stopwatch();
   TextureGen(String seed){
     _hash = new Hash(seed);
-    total = new Stopwatch();
   }
   
   Grid getTile(int x,int y, height, width,[int outHeight = 512, int outWidth = 512]){
-    total.start();
     
     var grid = new Grid(outHeight,outWidth);
     var factor = 2;
@@ -22,11 +17,11 @@ class TextureGen{
     var level = 2;
     var temp;
       
-    grid += inter(hash(x, y, height + 1, width +1), outHeight, outWidth);
+    grid += hash(x, y, height + 1, width +1).scaleUp(outHeight, outWidth, mix);
     while(height * factor < outHeight && width * factor < outWidth){
       temp = hash( x * factor, y * factor, (height * factor) + 1, (width * factor) +1, level);
       temp /= factor;
-      grid += inter(temp, outHeight, outWidth);
+      grid += temp.scaleUp(outHeight, outWidth, mix);
       divide += (1 / factor);
       factor *= 2;
       level += 1;
@@ -39,21 +34,10 @@ class TextureGen{
     
     grid /= divide;
     
-    total.stop();
     return grid;
   }
   
-  toString(){
-    var sb = new StringBuffer();
-    sb.writeln("Hash(${hashtime.elapsedMilliseconds})");
-    sb.writeln("Inter(${intertime.elapsedMilliseconds})");
-    sb.writeln('$mixcount mixcount');
-    sb.write("TextureGen(${total.elapsedMilliseconds})");
-    return sb.toString();
-  }
-  
   Grid hash(int hx,int hy, int height, int width, [int level = 1]){
-    hashtime.start();
     var ydiff = hy % 32;
     var xdiff = hx % 32;
     var fill = new Grid(height, width);
@@ -63,8 +47,6 @@ class TextureGen{
         fill.put(x - xdiff , y - ydiff, hashCell(hx + x - xdiff,hy + y - ydiff, level));
       }
     }
-    
-    hashtime.stop();
     return fill;
   }
   
@@ -72,17 +54,9 @@ class TextureGen{
     var rand = new Random(_hash.hash('${x}x${y}l$level'));
     return new Grid.fill(32, 32, (x, y) => rand.nextDouble());
   }
-  
-  Grid inter(Grid data, int newHeight, int newWidth){
-    intertime.start();
-    var grid = data.scaleUp(newHeight, newWidth, mix);
-    intertime.stop();
-    return grid;
-  }
 
-  var mixcount = 0;
+
   mix(a, b, t){
-    mixcount += 1;
     t = t*t*(3 - 2*t);
     return a*(1-t) + b*t;
   }

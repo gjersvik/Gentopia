@@ -5,6 +5,7 @@ class World{
   ColorGen cgen = new ColorGen();
   
   Uint8List makeTexture(int x, int y, int height, int width, [int outHeight = 512 , int outWidth = 512]){
+    var timer = new Stopwatch()..start();
     Grid grid = gen.getTile(x, y, height, width, outHeight, outWidth);
     
     Uint8List data = new Uint8List(outHeight * outWidth * 4);
@@ -19,6 +20,8 @@ class World{
       data[d + 2] = c.blue;
       data[d + 3] = c.alfa;
     }
+    
+    print('World(${timer.elapsedMilliseconds})');
     return  data;
   }
 }
