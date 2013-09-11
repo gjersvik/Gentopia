@@ -1,7 +1,7 @@
 part of gentopia;
 
 class ColorGen {
-  
+  List cache = new List(5000);
   Map _points = new Map();
   ColorGen(){
     addPoint(0.0, new Color(6, 48, 168));
@@ -13,11 +13,32 @@ class ColorGen {
     addPoint(0.89, new Color(202, 203, 201));
     addPoint(0.9, new Color(236, 234, 255));
     addPoint(1.0, new Color(255,255,255));
+    
+    preCalc();
   }
   
   addPoint(double point, Color color) => _points[point] = color;
   
   Color getColor(double value){
+    return cache[(value*5000).floor()];
+  }
+  
+  Color mix(Color from, Color to, double t){
+    return new Color(
+        (from.red * (1-t) + to.red * t).round(),
+        (from.green * (1-t) + to.green * t).round(),
+        (from.blue * (1-t) + to.blue * t).round(),
+        (from.alfa * (1-t) + to.alfa * t).round()
+    );
+  }
+  
+  preCalc(){
+    for(var i = 0; i < 5000; i += 1 ){
+      cache[i] = makeColor(i/5000);
+    }
+  }
+  
+  Color makeColor(double value){
     var prev = 0.0;
     var prevColor = _points[0.0];
     var next = 1.0;
@@ -40,15 +61,6 @@ class ColorGen {
     value -= prev;
     
     return mix(prevColor, nextColor, value / (next - prev));
-  }
-  
-  Color mix(Color from, Color to, double t){
-    return new Color(
-        (from.red * (1-t) + to.red * t).round(),
-        (from.green * (1-t) + to.green * t).round(),
-        (from.blue * (1-t) + to.blue * t).round(),
-        (from.alfa * (1-t) + to.alfa * t).round()
-    );
   }
 }
 

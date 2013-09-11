@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:benchmark_harness/benchmark_harness.dart';
 import 'package:gentopia/gentopia.dart';
 
@@ -11,7 +13,20 @@ class HashBenchmark extends BenchmarkBase {
   }
 }
 
+class ColorGenBenchmark extends BenchmarkBase {
+  var obj = new ColorGen();
+  var rand = new Random();
+  double value = 0.0;
+  ColorGenBenchmark() : super("ColorGen");
 
+  void setup(){
+    value = rand.nextDouble();
+  }
+  // The benchmark code.
+  void run() {
+    obj.getColor(value);
+  }
+}
 
 class WorldBenchmark extends BenchmarkBase {
   World w = new World();
@@ -25,6 +40,7 @@ class WorldBenchmark extends BenchmarkBase {
 
 main() {
   new HashBenchmark().report();
+  new ColorGenBenchmark().report();
   new WorldBenchmark().report();
 }
 
