@@ -2,6 +2,7 @@ library gentopiamap;
 
 import 'dart:async';
 import 'dart:html';
+import 'dart:math';
 
 import 'package:gentopia/gentopia.dart';
 
@@ -12,7 +13,7 @@ part 'src/map/worldloader.dart';
 class Maper{
   Element elem;
   
-  Rect client = new Rect(0,0,0,0);  
+  Rectangle client = new Rectangle(0,0,0,0);  
   num height;
   num width;
   bool resized = true;
@@ -29,7 +30,7 @@ class Maper{
       var p = e.page * (1/512);
       p -= new Point(client.width / 2, client.height / 2);
       p = client.topLeft + p;
-      client = new Rect(p.x, p.y, client.width, client.height);
+      client = new Rectangle(p.x, p.y, client.width, client.height);
       moved = true;
     });
     
@@ -42,7 +43,7 @@ class Maper{
     if(resized){
       height = elem.borderEdge.height;
       width = elem.borderEdge.width;
-      client = new Rect(client.left, client.top, width / 512, height / 512);
+      client = new Rectangle(client.left, client.top, width / 512, height / 512);
       resized = false;
       moved = true;
     }
@@ -63,14 +64,6 @@ class Maper{
 }
 
 void main() {
-  var len = new WorldLength();
-  len.mm = 1234;
-  print(len);
-  len.mm = 1234567;
-  print(len);
-  len.mm = 123456780123;
-  print(len);
-  
-  var map = new Maper(query("#map"));
+  var map = new Maper(querySelector("#map"));
   map.start();
 }

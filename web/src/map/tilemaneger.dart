@@ -6,9 +6,11 @@ class TileManeger{
   Map<Point,Tile> _cache = new Map();
   TileManeger(this._world);
   
-  List<Tile> getTiles(Rect rect){
+  List<Tile> getTiles(Rectangle rect){
     List list = [];
-    var r = new Rect.fromPoints(rect.topLeft.floor(), rect.bottomRight.ceil());
+    var topLeft = new Point(rect.topLeft.x.floor(),rect.topLeft.y.floor());
+    var bottomRight = new Point(rect.bottomRight.x.ceil(),rect.bottomRight.y.ceil());
+    var r = new Rectangle.fromPoints(topLeft, bottomRight);
     for(var y = r.top; y <= r.bottom; y += 1 ){
       for(var x = r.left; x <= r.right; x += 1 ){
         list.add(getTile(new Point(x,y)));
@@ -21,7 +23,7 @@ class TileManeger{
     if(_cache.containsKey(p)){
       return _cache[p];
     }
-    Rect r = new Rect(p.x, p.y, 1, 1);
+    Rectangle r = new Rectangle(p.x, p.y, 1, 1);
     Tile tile = new Tile(r, new ImageElement());
     _cache[p] = tile;
     
