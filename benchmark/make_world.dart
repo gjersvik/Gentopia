@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:benchmark_harness/benchmark_harness.dart';
 import 'package:gentopia/gentopia.dart';
@@ -10,6 +11,17 @@ class HashBenchmark extends BenchmarkBase {
   // The benchmark code.
   void run() {
     h.hash('321x132l5');
+  }
+}
+
+class HashBenchmark32 extends BenchmarkBase {
+  Hash h = new Hash('Ole Martin');
+  var data = new Uint32List.fromList([0x85ebca6b,0x12ebca6b,0x8545cdab]);
+  HashBenchmark32() : super("Hash32");
+
+  // The benchmark code.
+  void run() {
+    h.hashData(data);
   }
 }
 
@@ -40,6 +52,7 @@ class WorldBenchmark extends BenchmarkBase {
 
 main() {
   new HashBenchmark().report();
+  new HashBenchmark32().report();
   new ColorGenBenchmark().report();
   new WorldBenchmark().report();
 }
