@@ -3,10 +3,12 @@ part of gentopia;
 class TextureGen{
   int _seed = 0;
   
-  Hash _hash;
+  Prandom _top;
+  Map<int,Prandom> _levels = {};
+  
   
   TextureGen(String seed){
-    _hash = new Hash(seed);
+    _top = new Prandom(seed);
   }
   
   Grid getTile(int x,int y, height, width,[int outHeight = 512, int outWidth = 512]){
@@ -51,7 +53,10 @@ class TextureGen{
   }
   
   Grid hashCell(int x,int y,int level){
-    var rand = new Random(_hash.hash('${x}x${y}l$level'));
+    if(!_levels.containsKey(level)){
+      _levels[level] = new Prandom("$level",_top);
+    }
+    var rand = new Random(_levels[level].getValue('${x}x${y}'));
     return new Grid.fill(32, 32, (x, y) => rand.nextDouble());
   }
 
